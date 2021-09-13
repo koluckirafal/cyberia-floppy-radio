@@ -1,0 +1,24 @@
+version: "3.3"
+
+services:
+  cyberia-floppy-radio:
+    build: .
+    volumes:
+      - ./music:/music
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - ICECAST_PASS=${STREAM_PASSWORD}
+      - ICECAST_HOST=icecast
+      - ICECAST_PORT=8000
+    
+  icecast:
+    image: infiniteproject/icecast
+    ports:
+      - 8000:8000
+    environment:
+      - ICECAST_SOURCE_PASSWORD=${STREAM_PASSWORD}
+      - ICECAST_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ICECAST_ADMIN_USERNAME=${ADMIN_NAME}
+      - ICECAST_ADMIN_EMAIL=${ADMIN_MAIL}
+      - ICECAST_LOCATION=${SRV_LOCATION}
+      - ICECAST_HOSTNAME=${SRV_HOSTNAME}
